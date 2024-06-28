@@ -5,14 +5,13 @@ import Layout from "../components/Layout"
 import { axiosInstance } from '../index'; 
  
 function NumeroPrimoCreate() {
-    const [numeroInicio, setNumeroInicio] = useState(0);
-    const [numerosCalcular, setNumerosCalcular] = useState(0)
-    const [isSaving, setIsSaving] = useState(false)
+    const [numeroInicio, setNumeroInicio] = useState(null);
+    const [numerosCalcular, setNumerosCalcular] = useState(null)
     const go = useNavigate();
   
     const handleSave = () => {
 
-        if(numeroInicio === ""){
+        if(numeroInicio === null){
             Swal.fire({
                 icon: 'error',
                 title: 'Ingrese Número de inicio!',
@@ -22,22 +21,22 @@ function NumeroPrimoCreate() {
             return;
         }
 
-        if(numerosCalcular === ""){
+        if(numerosCalcular === null){
             Swal.fire({
                 icon: 'error',
-                title: 'Ingrese Número a calcular!',
+                title: 'Ingrese Números a calcular!',
                 showConfirmButton: false,
                 timer: 1500
             })
             return;
         }
 
-        setIsSaving(true);
         let token = localStorage.getItem("token");
+        let idUsuario = localStorage.getItem("idUsuario");
         axiosInstance.post('/api/numerosPrimos', {
             NumeroInicio: numeroInicio,
             NumerosCalcular: numerosCalcular,
-            usuarioId: 1
+            usuarioId: idUsuario
           },{
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -50,8 +49,7 @@ function NumeroPrimoCreate() {
                 showConfirmButton: false,
                 timer: 1500
             })
-            setIsSaving(false);
-            go("/NumeroPrimos")
+            go("/numerosPrimos")
           })
           .catch(function (error) {
             Swal.fire({
@@ -60,7 +58,6 @@ function NumeroPrimoCreate() {
                 showConfirmButton: false,
                 timer: 1500
             })
-            setIsSaving(false)
           });
     }
   
@@ -72,7 +69,7 @@ function NumeroPrimoCreate() {
                     <div className="card-header">
                         <Link 
                             className="btn btn-outline-info float-right"
-                            to="/NumeroPrimos">Ver todos los Numeros Primos
+                            to="/numerosPrimos">Ver todos los Numeros Primos
                         </Link>
                     </div>
                     <div className="card-body">
@@ -82,7 +79,7 @@ function NumeroPrimoCreate() {
                                 <input 
                                     onChange={(event)=>{setNumeroInicio(event.target.value)}}
                                     value={numeroInicio}
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="numeroInicio"
                                     name="numeroInicio"/>
@@ -92,14 +89,13 @@ function NumeroPrimoCreate() {
                                 <input 
                                     onChange={(event)=>{setNumerosCalcular(event.target.value)}}
                                     value={numerosCalcular}
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="numerosCalcular"
                                     name="numerosCalcular"/>
                             </div>
                             
                             <button 
-                                disabled={isSaving}
                                 onClick={handleSave} 
                                 type="button"
                                 className="btn btn-outline-primary mt-3">

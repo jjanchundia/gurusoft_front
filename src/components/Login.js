@@ -10,7 +10,6 @@ function Login() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        debugger
         if (usuario === "") {
             Swal.fire({
                 icon: 'error',
@@ -30,7 +29,6 @@ function Login() {
             })
             return;
         }
-        console.log(axiosInstance);
 
         axiosInstance.post('/api/usuarios/login',{
             username: usuario,
@@ -48,6 +46,8 @@ function Login() {
                 // Almacenamos el token en nuestro localstorage para usarlo en las 
                 // demas peticiones mas adelante
                 localStorage.setItem("token", response.data.value.token);
+                localStorage.setItem("idUsuario", response.data.value.idUsuario);
+                console.log(response.data.value.idUsuario);
                 console.log(localStorage.getItem("token"));
                 navigate('/numerosPrimos'); // Redireccionamos a la página de libros
             })

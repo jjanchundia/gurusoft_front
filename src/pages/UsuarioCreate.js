@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 import Layout from "../components/Layout"
@@ -9,7 +9,6 @@ function UsuarioCreate() {
     const [apellido, setApellido] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [isSaving, setIsSaving] = useState(false)
     const go = useNavigate();
 
     const handleSave = () => {
@@ -17,7 +16,7 @@ function UsuarioCreate() {
         if (nombre === "") {
             Swal.fire({
                 icon: 'error',
-                title: 'Ingrese Nombre!',
+                title: 'Ingrese Nombres!',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -54,11 +53,10 @@ function UsuarioCreate() {
             return;
         }
 
-        setIsSaving(true);
-        axiosInstance.post('/api/usuario/register', {
+        axiosInstance.post('/api/usuarios/register', {
             Nombres: nombre,
             Apellidos: apellido,
-            username: username,
+            user: username,
             password: password,
         })
             .then(function (response) {
@@ -68,12 +66,11 @@ function UsuarioCreate() {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                setIsSaving(false);
                 setNombre('')
                 setApellido('')
                 setUsername("")
                 setPassword("")
-                go("/Usuarios")
+                go("/usuarios")
             })
             .catch(function (error) {
                 Swal.fire({
@@ -82,69 +79,67 @@ function UsuarioCreate() {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                setIsSaving(false)
             });
     }
 
     return (
         <Layout>
-            <div classnombre="container">
-                <h2 classnombre="text-center mt-5 mb-3">Crear Nuevo Usuario</h2>
-                <div classnombre="card">
-                    <div classnombre="card-header">
+            <div className="container">
+                <h2 className="text-center mt-5 mb-3">Crear Nuevo Usuario</h2>
+                <div className="card">
+                    <div className="card-header">
                         <Link
-                            classnombre="btn btn-outline-info float-right"
+                            className="btn btn-outline-info float-right"
                             to="/Usuarios">Ver todos los Usuarios
                         </Link>
                     </div>
-                    <div classnombre="card-body">
+                    <div className="card-body">
                         <form>
-                            <div classnombre="form-group">
+                            <div className="form-group">
                                 <label htmlFor="nombre">Nombres</label>
                                 <input
                                     onChange={(event) => { setNombre(event.target.value) }}
                                     value={nombre}
                                     type="text"
-                                    classnombre="form-control"
+                                    className="form-control"
                                     id="nombre"
                                     nombre="nombre" />
                             </div>
-                            <div classnombre="form-group">
+                            <div className="form-group">
                                 <label htmlFor="apellido">Apellidos</label>
                                 <input
                                     onChange={(event) => { setApellido(event.target.value) }}
                                     value={apellido}
                                     type="text"
-                                    classnombre="form-control"
+                                    className="form-control"
                                     id="apellido"
                                     nombre="apellido" />
                             </div>
-                            <div classnombre="form-group">
+                            <div className="form-group">
                                 <label htmlFor="username">Usuario</label>
                                 <input
                                     onChange={(event) => { setUsername(event.target.value) }}
                                     value={username}
                                     type="text"
-                                    classnombre="form-control"
+                                    className="form-control"
                                     id="username"
                                     nombre="username" />
                             </div>
-                            <div classnombre="form-group">
+                            <div className="form-group">
                                 <label htmlFor="password">Password</label>
                                 <input
                                     onChange={(event) => { setPassword(event.target.value) }}
                                     value={password}
                                     type="text"
-                                    classnombre="form-control"
+                                    className="form-control"
                                     id="password"
                                     nombre="password" />
                             </div>
 
                             <button
-                                disabled={isSaving}
                                 onClick={handleSave}
                                 type="button"
-                                classnombre="btn btn-outline-primary mt-3">
+                                className="btn btn-outline-primary mt-3">
                                 Guardar
                             </button>
                         </form>

@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
-import Swal from 'sweetalert2'
 import Layout from "../components/Layout"
 import { axiosInstance } from '../index';
 
 function UsuarioList() {
     const [UsuarioList, setUsuarioList] = useState([])
-    let token = localStorage.getItem("token");
 
     useEffect(() => {
         fetchUsuarioList()
     }, [])
 
     const fetchUsuarioList = () => {
-        axiosInstance.get('/api/usuario')
+        axiosInstance.get('/api/usuarios')
             .then(function (response) {
                 setUsuarioList(response.data.value);
                 console.log(response.data);
@@ -42,7 +40,6 @@ function UsuarioList() {
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>Usuario</th>
-                                    <th>Password</th>
                                     {/* <th width="240px">Acción</th> */}
                                 </tr>
                             </thead>
@@ -53,7 +50,6 @@ function UsuarioList() {
                                             <td>{Usuario.nombres}</td>
                                             <td>{Usuario.apellidos}</td>
                                             <td>{Usuario.username}</td>
-                                            <td>{Usuario.password}</td>
                                         </tr>
                                     )
                                 })}
